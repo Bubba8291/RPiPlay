@@ -368,12 +368,13 @@ raop_handler_setup(raop_conn_t *conn,
 
         // Time port
         uint64_t timing_rport;
-        plist_t time_note = plist_dict_get_item(req_root_node, "timingPort");
-        plist_get_uint_val(time_note, &timing_rport);
+        plist_t time_note = plist_dict_get_item(res_root_node, "timingPort");
+//        logger_log(conn->raop->logger, LOGGER_DEBUG, "timing_debug = %llu", res_root_node);
+//        plist_get_uint_val(time_note, &timing_rport);
         logger_log(conn->raop->logger, LOGGER_DEBUG, "timing_rport = %llu", timing_rport);
 
         unsigned short timing_lport;
-        conn->raop_ntp = raop_ntp_init(conn->raop->logger, conn->remote, conn->remotelen, timing_rport);
+        conn->raop_ntp = raop_ntp_init(conn->raop->logger, conn->remote, conn->remotelen, 7011);
         raop_ntp_start(conn->raop_ntp, &timing_lport);
 
         conn->raop_rtp = raop_rtp_init(conn->raop->logger, &conn->raop->callbacks, conn->raop_ntp, conn->remote, conn->remotelen, aeskey, aesiv, ecdh_secret);
